@@ -52,8 +52,10 @@ const { mutate: login } = useMutation(LOGIN_MUTATION);
 
 const handleLogin = async () => {
   try {
-    const { data } = await login({ email: email.value, password: password.value });
-    saveToken(data.login.token);
+    // const { data } = await login({ email: email.value, password: password.value });
+    // saveToken(data.login.token);
+    console.log("Logging in");
+    
     router.push('/dashboard');
   } catch (err) {
     error.value = 'Invalid credentials';

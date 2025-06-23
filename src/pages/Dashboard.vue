@@ -1,13 +1,46 @@
 <template>
   <div class="p-6">
-    <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
-    <p class="text-gray-700">Welcome to the support ticket system.</p>
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+    <TicketList :tickets="tickets" :loading="loading" :error="error" />
   </div>
 </template>
 
 <script setup>
-// Future: fetch user profile, list of tickets etc.
-</script>
+import { ref, computed } from 'vue';
+import { useQuery } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
+import { getToken } from '../services/auth';
+import { decodeJwt } from '../utils/jwt';
+import TicketList from '../components/TicketList.vue';
 
-<style scoped>
-</style>
+const token = getToken();
+const user = decodeJwt(token);
+const role = user?.role;
+const userId = user?.id;
+
+const CUSTOMER_TICKETS_QUERY = gql`
+  query MyTickets {
+    myTickets {
+      id
+      subject
+      status
+    }
+  }
+`;
+
+const AGENT_TICKETS_QUERY = gql`
+  query OpenTickets {
+    openTickets {
+      id
+      subject
+      status
+    }
+  }
+`;
+
+const { result, loading, error } = useQuery(
+  role === 'agent' ? AGENT_TICKETS_QUERY : CUSTOMER_TICKETS_QUERY
+);
+
+const tickets = computed(() => result.value?.myTickets || result.value?.openTickets || []);
+</script>
