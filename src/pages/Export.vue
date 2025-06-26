@@ -17,7 +17,6 @@
 <script setup>
 import { ref } from 'vue';
 import { getToken } from '../services/auth';
-import { decodeJwt } from '../utils/jwt';
 
 const error = ref(null);
 
@@ -27,7 +26,7 @@ async function exportTickets() {
   try {
     const token = getToken();
 
-    const res = await fetch('http://localhost:3000/api/tickets/export', {
+    const res = await fetch(`${import.meta.env.API_HTTP_URI}/api/tickets/export`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`

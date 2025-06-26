@@ -10,7 +10,7 @@
         <h4 class="font-semibold">Attachments:</h4>
         <ul class="list-disc list-inside">
           <li v-for="url in ticket.attachmentUrls" :key="url">
-            <a :href="url.startsWith('http') ? url : `http://localhost:3000${url}`" target="_blank" class="text-blue-600 underline">
+            <a :href="url.startsWith('http') ? url : `${API_HTTP_URI}${url}`" target="_blank" class="text-blue-600 underline">
               View Attachment
             </a>
           </li>
@@ -56,6 +56,8 @@ import { decodeJwt } from '../utils/jwt';
 const route = useRoute();
 const ticketId = route.params.id;
 const commentText = ref('');
+
+const API_HTTP_URI = import.meta.env.API_HTTP_URI || 'http://localhost:3000';
 
 const user = decodeJwt(getToken());
 const userId = user?.id;
