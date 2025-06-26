@@ -21,7 +21,6 @@ let userRole = '';
 if (token) {
   try {
     const decoded = decodeJwt(token);
-    console.log(decoded);
     
     userRole = decoded.role || '';
   } catch (e) {
