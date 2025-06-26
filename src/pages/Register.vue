@@ -66,6 +66,7 @@ const { mutate: register } = useMutation(REGISTER_MUTATION);
 const handleRegister = async () => {
   try {
     const { data } = await register({ name: name.value, email: email.value, password: password.value, role: role.value });
+    console.log('Registering user:', data);
     saveToken(data.register.token);
     router.push('/dashboard');
   } catch (err) {

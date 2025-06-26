@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useMutation, useApolloClient } from '@vue/apollo-composable';
+import { useMutation, } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
 import { saveToken } from '../services/auth';
@@ -52,9 +52,9 @@ const { mutate: login } = useMutation(LOGIN_MUTATION);
 
 const handleLogin = async () => {
   try {
-    // const { data } = await login({ email: email.value, password: password.value });
-    // saveToken(data.login.token);
-    console.log("Logging in");
+    const { data } = await login({ email: email.value, password: password.value });
+    saveToken(data.login.token);
+    console.log('Logging in');
     
     router.push('/dashboard');
   } catch (err) {

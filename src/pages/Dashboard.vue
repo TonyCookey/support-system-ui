@@ -18,29 +18,27 @@ const user = decodeJwt(token);
 const role = user?.role;
 const userId = user?.id;
 
-const CUSTOMER_TICKETS_QUERY = gql`
-  query MyTickets {
-    myTickets {
+const TICKETS_QUERY = gql`
+  query tickets {
+    tickets {
       id
-      subject
+      title
       status
     }
   }
 `;
 
-const AGENT_TICKETS_QUERY = gql`
-  query OpenTickets {
-    openTickets {
-      id
-      subject
-      status
-    }
-  }
-`;
+// const AGENT_TICKETS_QUERY = gql`
+//   query tickets {
+//     tickets {
+//       id
+//       description
+//       status
+//     }
+//   }
+// `;
 
-const { result, loading, error } = useQuery(
-  role === 'agent' ? AGENT_TICKETS_QUERY : CUSTOMER_TICKETS_QUERY
-);
+const { result, loading, error } = useQuery(TICKETS_QUERY);
 
-const tickets = computed(() => result.value?.myTickets || result.value?.openTickets || []);
+const tickets = computed(() => result.value?.tickets || []);
 </script>

@@ -15,6 +15,10 @@
 } */
 @import "tailwindcss";
 
+button:hover {
+  cursor: pointer;
+}
+
 /* a {
   font-weight: 500;
   color: #646cff;

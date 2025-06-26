@@ -6,7 +6,7 @@
 
     <ul v-else class="space-y-4">
       <li v-for="ticket in tickets" :key="ticket.id" class="p-4 border rounded">
-        <h3 class="text-lg font-bold">{{ ticket.subject }}</h3>
+        <h3 class="text-lg font-bold">{{ ticket.title }}</h3>
         <p class="text-sm text-gray-600">Status: {{ ticket.status }}</p>
         <router-link :to="`/tickets/${ticket.id}`" class="text-blue-600 hover:underline mt-1 inline-block">
           View Details

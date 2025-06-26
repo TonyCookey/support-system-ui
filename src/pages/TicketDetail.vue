@@ -3,13 +3,18 @@
     <div v-if="loading" class="text-gray-600">Loading...</div>
     <div v-else-if="error" class="text-red-500">Error loading ticket</div>
     <div v-else>
-      <h2 class="text-2xl font-bold mb-2">{{ ticket.subject }}</h2>
-      <p class="mb-4 text-gray-700">{{ ticket.message }}</p>
+      <h2 class="text-2xl font-bold mb-2">{{ ticket.title }}</h2>
+      <p class="mb-4 text-gray-700">{{ ticket.description }}</p>
 
-      <div v-if="ticket.attachmentUrl" class="mb-4">
-        <a :href="ticket.attachmentUrl" target="_blank" class="text-blue-600 underline">
-          View Attachment
-        </a>
+      <div v-if="ticket.attachmentUrls.length" class="mb-4">
+        <h4 class="font-semibold">Attachments:</h4>
+        <ul class="list-disc list-inside">
+          <li v-for="url in ticket.attachmentUrls" :key="url">
+            <a :href="url.startsWith('http') ? url : `http://localhost:3000${url}`" target="_blank" class="text-blue-600 underline">
+              View Attachment
+            </a>
+          </li>
+        </ul>
       </div>
 
       <p class="text-sm text-gray-500 mb-6">Status: <strong>{{ ticket.status }}</strong></p>
@@ -60,14 +65,14 @@ const TICKET_QUERY = gql`
   query Ticket($id: ID!) {
     ticket(id: $id) {
       id
-      subject
-      message
+      title
+      description
       status
-      attachmentUrl
+      attachmentUrls
       comments {
         id
-        message
-        author {
+        content
+        user {
           id
           role
         }
@@ -102,6 +107,8 @@ const UPDATE_STATUS = gql`
 `;
 
 const { result, loading, error, refetch } = useQuery(TICKET_QUERY, { id: ticketId });
+console.log(error);
+
 
 const ticket = computed(() => result.value?.ticket || { comments: [] });
 const lastComment = computed(() => [...ticket.value.comments].pop());
