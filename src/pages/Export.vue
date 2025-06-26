@@ -27,7 +27,7 @@ async function exportTickets() {
   try {
     const token = getToken();
 
-    const res = await fetch('http://localhost:3000/export_tickets', {
+    const res = await fetch('http://localhost:3000/api/tickets/export', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`

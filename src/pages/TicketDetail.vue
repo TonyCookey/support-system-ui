@@ -22,8 +22,8 @@
       <div class="space-y-4 mb-6">
         <h3 class="text-lg font-semibold">Comments</h3>
         <div v-for="comment in ticket.comments" :key="comment.id" class="p-3 border rounded bg-gray-50">
-          <p class="text-sm text-gray-800">{{ comment.message }}</p>
-          <p class="text-xs text-gray-500 mt-1">By: {{ comment.author.role }}</p>
+          <p class="text-sm text-gray-800">{{ comment.content }}</p>
+          <p class="text-xs text-gray-500 mt-1">By: {{ comment?.user?.role }}</p>
         </div>
       </div>
 
@@ -82,22 +82,22 @@ const TICKET_QUERY = gql`
 `;
 
 const COMMENT_MUTATION = gql`
-  mutation AddComment($ticketId: ID!, $message: String!) {
+  mutation AddComment($ticketId: ID!, $content: String!) {
     addComment(input: {
       ticketId: $ticketId,
-      message: $message
+      content: $content
     }) {
       comment {
         id
-        message
+        content
       }
     }
   }
 `;
 
 const UPDATE_STATUS = gql`
-  mutation CloseTicket($id: ID!) {
-    updateTicketStatus(id: $id, status: "closed") {
+  mutation UpdateTicketStatus($input: UpdateTicketStatusInput!) {
+    updateTicketStatus(input: $input) {
       ticket {
         id
         status
@@ -105,7 +105,6 @@ const UPDATE_STATUS = gql`
     }
   }
 `;
-
 const { result, loading, error, refetch } = useQuery(TICKET_QUERY, { id: ticketId });
 console.log(error);
 
@@ -121,13 +120,19 @@ const { mutate: updateTicketStatus } = useMutation(UPDATE_STATUS);
 
 async function submitComment() {
   if (!commentText.value.trim()) return;
-  await addComment({ ticketId, message: commentText.value });
+  await addComment({ ticketId, content: commentText.value });
+  await updateStatus('in_progress');
   commentText.value = '';
   await refetch();
 }
 
 async function updateStatus(status) {
-  await updateTicketStatus({ id: ticketId, status });
+ await updateTicketStatus({
+    input: {
+      ticketId,
+      status
+    }
+  });  
   await refetch();
 }
 </script>

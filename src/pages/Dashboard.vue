@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import {  computed } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { getToken } from '../services/auth';
@@ -27,16 +27,6 @@ const TICKETS_QUERY = gql`
     }
   }
 `;
-
-// const AGENT_TICKETS_QUERY = gql`
-//   query tickets {
-//     tickets {
-//       id
-//       description
-//       status
-//     }
-//   }
-// `;
 
 const { result, loading, error } = useQuery(TICKETS_QUERY);
 
