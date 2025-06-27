@@ -36,11 +36,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted} from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
-import { saveToken } from '../services/auth';
+import { saveToken, getToken} from '../services/auth';
 
 const name = ref('');
 const email = ref('');
@@ -48,6 +48,12 @@ const password = ref('');
 const role = ref('customer');
 const error = ref(null);
 const router = useRouter();
+
+onMounted(() => {
+  if (getToken()) {
+    router.push('/dashboard');
+  }
+});
 
 const REGISTER_MUTATION = gql`
   mutation Register($name: String!, $email: String!, $password: String!, $role: String!) {

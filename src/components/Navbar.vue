@@ -5,7 +5,12 @@
       <router-link to="/tickets/new" class="hover:underline">New Ticket</router-link>
       <router-link v-if="userRole === 'agent'" to="/export" class="hover:underline">Export</router-link>
     </div>
+    <div class="flex items-center space-x-4">
+    <p class="text-sm">
+      Logged in as: <strong>{{ userRole }}</strong>
+    </p>
     <button @click="logoutAndRedirect" class="bg-red-500 px-3 py-1 rounded">Logout</button>
+    </div>
   </nav>
 </template>
 
