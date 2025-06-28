@@ -10,37 +10,36 @@
         <h4 class="font-semibold">Attachments:</h4>
         <ul class="list-disc list-inside">
           <li v-for="url in ticket.attachmentUrls" :key="url">
-            <a :href="url.startsWith('http') ? url : `${API_HTTP_URI}${url}`" target="_blank" class="text-blue-600 underline">
+            <a :href="url.startsWith('http') ? url : `${API_HTTP_URI}${url}`" target="_blank"
+              class="text-blue-600 underline">
               View Attachment
             </a>
           </li>
         </ul>
       </div>
 
-      <p class="text-sm text-gray-500 mb-6">Status: <strong>{{ ticket.status }}</strong></p>
+      <p :class="['text-sm', 'mb-6', ticket.status]">Status: <strong>{{ ticket.status }}</strong></p>
+      <div v-if="isAgent" class="mb-6">
+        <button class="bg-red-500 text-white px-4 py-2 rounded" @click="updateStatus('closed')"
+          v-if="ticket.status !== 'closed'">
+          Mark as Closed
+        </button>
+      </div>
 
       <div class="space-y-4 mb-6">
         <h3 class="text-lg font-semibold">Comments</h3>
         <div v-for="comment in ticket.comments" :key="comment.id" class="p-3 border rounded bg-gray-50">
           <p class="text-sm text-gray-800">{{ comment.content }}</p>
-          <p class="text-xs text-gray-500 mt-1">By: {{ comment?.user?.role }}</p>
+          <p class="text-xs text-gray-500 mt-1">By: {{ comment?.user?.role }} {{ comment?.user?.name }}</p>
         </div>
       </div>
 
       <form v-if="canReply" @submit.prevent="submitComment" class="space-y-2">
         <textarea v-model="commentText" class="w-full border rounded px-3 py-2" placeholder="Write a reply..." />
-        <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Send</button>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Send Comment</button>
       </form>
 
-      <div v-if="isAgent" class="mt-6">
-        <button
-          class="bg-green-600 text-white px-4 py-2 rounded"
-          @click="updateStatus('closed')"
-          v-if="ticket.status !== 'closed'"
-        >
-          Mark as Closed
-        </button>
-      </div>
+
     </div>
   </div>
 </template>
@@ -75,6 +74,7 @@ const TICKET_QUERY = gql`
         content
         user {
           id
+          name
           role
         }
       }
@@ -128,12 +128,12 @@ async function submitComment() {
 }
 
 async function updateStatus(status) {
- await updateTicketStatus({
+  await updateTicketStatus({
     input: {
       ticketId,
       status
     }
-  });  
+  });
   await refetch();
 }
 </script>

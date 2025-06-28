@@ -15,7 +15,7 @@
 
       <label class="block mb-2">
         <span>Password</span>
-        <input v-model="password" type="password" class="border rounded px-3 py-2 w-full" required />
+        <input v-model="password" type="password" class="border rounded px-3 py-2 w-full" required minlength="8" />
       </label>
 
       <label class="block mb-8">
@@ -71,8 +71,11 @@ const { mutate: register } = useMutation(REGISTER_MUTATION);
 
 const handleRegister = async () => {
   try {
+    if (password.value.length < 8) {
+      error.value = 'Password must be at least 8 characters long';
+      return;
+    }
     const { data } = await register({ name: name.value, email: email.value, password: password.value, role: role.value });
-    console.log('Registering user:', data);
     saveToken(data.register.token);
     router.push('/dashboard');
   } catch (err) {
@@ -84,3 +87,4 @@ const handleRegister = async () => {
 
 <style scoped>
 </style>
+

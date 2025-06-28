@@ -19,6 +19,16 @@ button:hover {
   cursor: pointer;
 }
 
+.closed {
+  color: #f87171; 
+}
+
+.open {
+  color: #34d399; 
+}
+.in_progress {
+  color: orange; 
+}
 /* a {
   font-weight: 500;
   color: #646cff;

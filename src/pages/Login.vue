@@ -11,7 +11,7 @@
 
       <label class="block mb-8">
         <span>Password</span>
-        <input v-model="password" type="password" class="border rounded px-3 py-2 w-full" required />
+        <input v-model="password" type="password" class="border rounded px-3 py-2 w-full" required minlength="8" />
       </label>
 
       <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded w-full">Login</button>
