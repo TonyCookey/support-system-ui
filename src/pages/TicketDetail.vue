@@ -57,10 +57,9 @@ const route = useRoute();
 const ticketId = route.params.id;
 const commentText = ref('');
 
-const API_HTTP_URI = import.meta.env.API_HTTP_URI || 'http://localhost:3000';
+const API_HTTP_URI = import.meta.env.VITE_API_URI
 
 const user = decodeJwt(getToken());
-const userId = user?.id;
 const isAgent = user?.role === 'agent';
 
 const TICKET_QUERY = gql`
