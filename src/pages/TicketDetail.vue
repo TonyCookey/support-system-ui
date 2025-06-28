@@ -39,7 +39,7 @@
         <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Send Comment</button>
       </form>
       <p v-else class="text-gray-500 text-sm">
-        You cannot reply to this ticket at the moment. Until an agent replies.
+        You cannot reply to this ticket <span v-if="ticket.status === 'closed'"> .This Ticket is closed.</span><span v-else>, until an agent replies.</span>.
       </p>
 
     </div>
@@ -64,6 +64,7 @@ const API_HTTP_URI = import.meta.env.VITE_API_URI
 
 const user = decodeJwt(getToken());
 const isAgent = user?.role === 'agent';
+const isCustomer = user?.role === 'customer';
 
 const TICKET_QUERY = gql`
   query Ticket($id: ID!) {
@@ -115,7 +116,7 @@ const { result, loading, error, refetch } = useQuery(TICKET_QUERY, { id: ticketI
 
 const ticket = computed(() => result.value?.ticket || { comments: [] });
 const canReply = computed(() =>
-  isAgent || (user.role === 'customer' && ticket.value.status === 'in_progress')
+  isAgent && ticket.value.status !== 'closed' || (isCustomer && ticket.value.status === 'in_progress')
 );
 
 const { mutate: addComment } = useMutation(COMMENT_MUTATION);
