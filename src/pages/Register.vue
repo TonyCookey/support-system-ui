@@ -85,8 +85,8 @@ const handleRegister = async () => {
     loading.value = true;
     
     const { data } = await register({ name: name.value, email: email.value, password: password.value, role: role.value });
-     if (data.login.errors.length > 0) {
-      error.value = data.login.errors[0]
+     if (data.register.errors.length > 0) {
+      error.value = data.register.errors[0]
       return
     }
     saveToken(data.register.token);
