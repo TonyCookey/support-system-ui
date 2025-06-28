@@ -1,5 +1,31 @@
-# Vue 3 + Vite
+# Support System Frontend (Vue + Vite)
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This is the frontend for the Support System, built with Vue 3, Vite, and Tailwind CSS. It communicates with a Rails API backend.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+---
+
+## 🛠️ Development Setup
+
+### ✅ Prerequisites
+
+- Node.js v18+
+- npm
+
+### Setup
+
+```bash
+# Clone the repo
+
+git clone https://github.com/TonyCookey/support-system-ui.git
+cd support-system-ui
+
+# Install dependencies
+npm install
+
+# Create environment config
+cp .env.example .env
+
+
+# Run the Dev Server
+npm run dev
+```
