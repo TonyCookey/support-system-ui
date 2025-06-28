@@ -26,7 +26,7 @@ async function exportTickets() {
   try {
     const token = getToken();
 
-    const res = await fetch(`${import.meta.env.API_HTTP_URI}/tickets/export`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URI}/api/tickets/export`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
