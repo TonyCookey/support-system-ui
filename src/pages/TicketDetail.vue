@@ -39,7 +39,7 @@
         <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Send Comment</button>
       </form>
       <p v-else class="text-gray-500 text-sm">
-        You cannot reply to this ticket <span v-if="ticket.status === 'closed'"> .This Ticket is closed.</span><span v-else>, until an agent replies.</span>.
+        You cannot reply to this ticket, <span v-if="ticket.status === 'closed'"> This Ticket is closed.</span><span v-else>until an agent replies.</span>
       </p>
 
     </div>
