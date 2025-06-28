@@ -38,7 +38,9 @@
         <textarea v-model="commentText" class="w-full border rounded px-3 py-2" placeholder="Write a reply..." />
         <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Send Comment</button>
       </form>
-
+      <p v-else class="text-gray-500 text-sm">
+        You cannot reply to this ticket at the moment. Until an agent replies.
+      </p>
 
     </div>
   </div>
@@ -109,13 +111,11 @@ const UPDATE_STATUS = gql`
   }
 `;
 const { result, loading, error, refetch } = useQuery(TICKET_QUERY, { id: ticketId });
-console.log(error);
 
 
 const ticket = computed(() => result.value?.ticket || { comments: [] });
-const lastComment = computed(() => [...ticket.value.comments].pop());
 const canReply = computed(() =>
-  isAgent || (lastComment.value?.author.role === 'agent' && user.role === 'customer')
+  isAgent || (user.role === 'customer' && ticket.value.status === 'in_progress')
 );
 
 const { mutate: addComment } = useMutation(COMMENT_MUTATION);
@@ -126,7 +126,9 @@ async function submitComment() {
     return
   }
   await addComment({ ticketId, content: commentText.value });
-  await updateStatus('in_progress');
+  if (user.role === 'agent' && ticket.value.status === 'open' ) {
+    await updateStatus('in_progress');
+  }
   commentText.value = '';
   await refetch();
 }
