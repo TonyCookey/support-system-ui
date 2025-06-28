@@ -14,7 +14,10 @@
         <input v-model="password" type="password" class="border rounded px-3 py-2 w-full" required minlength="8" />
       </label>
 
-      <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded w-full">Login</button>
+      <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded w-full flex items-center justify-center" :disabled="loading">
+         <span v-if="loading" class="animate-spin mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+        <span v-else >Login</span>
+      </button>
 
         <p class="text-sm mt-2">
             Don't have an account? <router-link to="/register" class="text-blue-600">Register</router-link>
@@ -35,6 +38,7 @@ const email = ref('');
 const password = ref('');
 const error = ref(null);
 const router = useRouter();
+const loading = ref(false);
 
 
 onMounted(() => {
@@ -59,6 +63,7 @@ const { mutate: login } = useMutation(LOGIN_MUTATION);
 
 const handleLogin = async () => {
   try {
+    loading.value = true;
     const { data } = await login({ email: email.value, password: password.value });
     saveToken(data.login.token);
     console.log('Logging in');
@@ -67,9 +72,12 @@ const handleLogin = async () => {
   } catch (err) {
     error.value = 'Invalid credentials';
     console.log('Login error:', err);
+  } finally {
+    loading.value = false;
   }
 };
 </script>
 
 <style scoped>
 </style>
+

@@ -26,7 +26,10 @@
         <span v-if="files.length" class="ml-2 text-sm text-gray-600">{{ files.length }} file(s) selected</span>
       </div>
 
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full mt-5">Submit</button>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full mt-5 flex items-center justify-center" :disabled="success">
+        <span v-if="!success">Create Ticket</span>
+        <span v-else class="animate-spin mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+      </button>
 
       <p v-if="error" class="text-red-600 mt-2">{{ error }}</p>
       <p v-if="success" class="text-green-600 mt-2">Ticket created successfully!</p>

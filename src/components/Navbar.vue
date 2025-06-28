@@ -2,7 +2,7 @@
   <nav class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
     <div class="flex space-x-4">
       <router-link to="/dashboard" class="hover:underline">Dashboard</router-link>
-      <router-link to="/tickets/new" class="hover:underline">New Ticket</router-link>
+      <router-link v-if="userRole === 'customer'" to="/tickets/new" class="hover:underline">New Ticket</router-link>
       <router-link v-if="userRole === 'agent'" to="/export" class="hover:underline">Export</router-link>
     </div>
     <div class="flex items-center space-x-4">

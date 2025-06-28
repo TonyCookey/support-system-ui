@@ -120,7 +120,9 @@ const { mutate: addComment } = useMutation(COMMENT_MUTATION);
 const { mutate: updateTicketStatus } = useMutation(UPDATE_STATUS);
 
 async function submitComment() {
-  if (!commentText.value.trim()) return;
+  if (!commentText.value.trim()) {
+    return
+  }
   await addComment({ ticketId, content: commentText.value });
   await updateStatus('in_progress');
   commentText.value = '';

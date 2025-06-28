@@ -2,7 +2,7 @@
   <div class="min-h-screen flex items-center justify-center">
     <form @submit.prevent="handleRegister" class="bg-white p-8 rounded shadow-md w-full max-w-lg">
       <h1 class="text-3xl mb-4 font-bold">Register</h1>
-        <p v-if="error" class="text-red-500 text-right text-sm mb-3">{{ error }}</p>
+      <p v-if="error" class="text-red-500 text-right text-sm mb-3">{{ error }}</p>
       <label class="block mb-2">
         <span>Name</span>
         <input v-model="name" type="text" class="border rounded px-3 py-2 w-full" required />
@@ -26,27 +26,32 @@
         </select>
       </label>
 
-      <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded w-full">Register</button>
-        <p class="text-sm mt-2">
-            Already have an account? <router-link to="/login" class="text-blue-600">Login</router-link>
-        </p>
+      <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded w-full flex items-center justify-center" :disabled="loading"> 
+        <span v-if="loading" class="animate-spin mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+        <span v-else >Register</span>
+      </button>
+      <p class="text-sm mt-2">
+        Already have an account? <router-link to="/login" class="text-blue-600">Login</router-link>
+      </p>
 
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
-import { saveToken, getToken} from '../services/auth';
+import { saveToken, getToken } from '../services/auth';
 
 const name = ref('');
 const email = ref('');
 const password = ref('');
 const role = ref('customer');
 const error = ref(null);
+const loading = ref(false);
+
 const router = useRouter();
 
 onMounted(() => {
@@ -75,16 +80,19 @@ const handleRegister = async () => {
       error.value = 'Password must be at least 8 characters long';
       return;
     }
+    loading.value = true;
+    console.log(loading.value);
+    
     const { data } = await register({ name: name.value, email: email.value, password: password.value, role: role.value });
     saveToken(data.register.token);
     router.push('/dashboard');
   } catch (err) {
     error.value = 'Registration failed';
     console.log('Registration error:', err);
+  } finally {
+    loading.value = false;
   }
 };
 </script>
 
-<style scoped>
-</style>
-
+<style scoped></style>
