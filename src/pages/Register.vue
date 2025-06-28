@@ -43,8 +43,9 @@ import { ref, onMounted } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
-import { saveToken, getToken } from '../services/auth';
+import { useAuthStore } from '../services/auth';
 
+const {saveToken, getToken} = useAuthStore()
 const name = ref('');
 const email = ref('');
 const password = ref('');
@@ -68,6 +69,7 @@ const REGISTER_MUTATION = gql`
         id
         role
       }
+      errors
     }
   }
 `;
@@ -81,9 +83,12 @@ const handleRegister = async () => {
       return;
     }
     loading.value = true;
-    console.log(loading.value);
     
     const { data } = await register({ name: name.value, email: email.value, password: password.value, role: role.value });
+     if (data.login.errors.length > 0) {
+      error.value = data.login.errors[0]
+      return
+    }
     saveToken(data.register.token);
     router.push('/dashboard');
   } catch (err) {

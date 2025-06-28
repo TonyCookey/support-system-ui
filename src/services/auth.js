@@ -1,11 +1,21 @@
-export function saveToken(token) {
-    localStorage.setItem('token', token);
-}
+import { ref } from 'vue';
 
-export function getToken() {
-    return localStorage.getItem('token');
-}
+const isLoggedIn = ref(!!localStorage.getItem('token'));
 
-export function logout() {
-    localStorage.removeItem('token');
+export function useAuthStore() {
+    const saveToken = (token) => {
+        localStorage.setItem('token', token);
+        isLoggedIn.value = true;
+    };
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        isLoggedIn.value = false;
+    };
+
+    const getToken = () => {
+        return localStorage.getItem('token');
+    };
+
+    return { isLoggedIn, saveToken, logout, getToken };
 }

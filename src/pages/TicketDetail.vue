@@ -49,8 +49,10 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useQuery, useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
-import { getToken } from '../services/auth';
 import { decodeJwt } from '../utils/jwt';
+import { useAuthStore } from '../services/auth';
+const {getToken} = useAuthStore()
+
 
 const route = useRoute();
 const ticketId = route.params.id;

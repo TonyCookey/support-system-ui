@@ -16,7 +16,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import { getToken } from '../services/auth';
+import { useAuthStore } from '../services/auth';
+const { getToken } = useAuthStore()
 
 const error = ref(null);
 

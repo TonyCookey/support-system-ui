@@ -8,9 +8,7 @@
 <script setup>
 import { computed } from 'vue';
 import Navbar from './components/Navbar.vue';
-import { getToken } from './services/auth';
+import { useAuthStore } from './services/auth';
 
-const isLoggedIn = computed(() => {
-  return getToken();
-});
+const {isLoggedIn} = useAuthStore()
 </script>

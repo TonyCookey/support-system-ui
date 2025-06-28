@@ -16,11 +16,12 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { logout, getToken } from '../services/auth';
+import { useAuthStore} from '../services/auth';
 import { decodeJwt } from '../utils/jwt';
 
-const router = useRouter();
+const { logout, getToken } = useAuthStore()
 const token = getToken();
+const router = useRouter();
 
 let userRole = '';
 if (token) {

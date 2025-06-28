@@ -4,9 +4,10 @@ import { DefaultApolloClient } from '@vue/apollo-composable';
 import App from './App.vue';
 import routes from './router';
 import apolloClient from './services/apollo';
-import { getToken } from './services/auth';
+import { useAuthStore } from './services/auth';
 import { decodeJwt } from './utils/jwt';
 
+const { getToken } = useAuthStore()
 const app = createApp({
     setup() {
         provide(DefaultApolloClient, apolloClient);
